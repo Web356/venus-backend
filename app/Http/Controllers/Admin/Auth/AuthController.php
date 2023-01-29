@@ -110,9 +110,11 @@ class AuthController extends Controller
 
             } else {
                 $user = Customer::where('phone_number', $request->phone)->first();
-                $verify->update([
-                    'account_id' => $user->id,
+
+                DB::table('verifies')->where('phone',$request->phone)->update([
+                    'customer_id' => $user->id,
                 ]);
+
                 $date = new DateTime();
                 $user->update([
                     'last_login' => $date,
@@ -173,19 +175,19 @@ class AuthController extends Controller
             if (Hash::check($request->otp_code,$verify->otp_code )){
 
           if(!$exist_customer) {
-              $customer = Customer::create([
-                  'phone_number' => $request->phone_number,
-              ]);
-
-
-              DB::table('verifies')->where('id', $verify->id)->update(['customer_id' => $customer->id]);
-              $profile_status = $customer->profile_status;
+//              $customer = Customer::create([
+//                  'phone_number' => $request->phone_number,
+//              ]);
+//
+//
+//              DB::table('verifies')->where('id', $verify->id)->update(['customer_id' => $customer->id]);
+//              $profile_status = $customer->profile_status;
 
               $data = [
-                  'customer_id' => $customer->id,
-                  'phone' => $customer->phone_number,
-                  'profile_status' => $profile_status ? true : false,
-                  'token' => $customer->createToken('auth-token', ['*'], now()->addDay())->plainTextToken,
+                  'verify' => $verify,
+                  'phone' => $request->phone_number,
+//                  'profile_status' => $profile_status ? true : false,
+                  'token' => $verify->createToken('auth-token', ['*'], now()->addDay())->plainTextToken,
               ];
               $status = 200;
               $message = 'check otp Verified successfully';
