@@ -175,18 +175,9 @@ class AuthController extends Controller
             if (Hash::check($request->otp_code,$verify->otp_code )){
 
           if(!$exist_customer) {
-//              $customer = Customer::create([
-//                  'phone_number' => $request->phone_number,
-//              ]);
-//
-//
-//              DB::table('verifies')->where('id', $verify->id)->update(['customer_id' => $customer->id]);
-//              $profile_status = $customer->profile_status;
-
               $data = [
                   'verify' => $verify,
                   'phone' => $request->phone_number,
-//                  'profile_status' => $profile_status ? true : false,
                   'token' => $verify->createToken('auth-token', ['*'], now()->addDay())->plainTextToken,
               ];
               $status = 200;
@@ -196,7 +187,6 @@ class AuthController extends Controller
 
               return response_json($data, $status, $message, $isSuccess, $errors);
           }else{
-
               DB::table('verifies')->where('id', $verify->id)->update(['customer_id' => $exist_customer->id]);
               $data = [
                   'customer_id' => $exist_customer->id,
