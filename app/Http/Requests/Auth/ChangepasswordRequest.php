@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckotpRequest extends FormRequest
+class ChangepasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class CheckotpRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone_number' => ['required', 'digits:11'],
-            'otp_code' => ['required'],
+            'password' => ['required','string', 'min:8','max:16'],
+            're_password' => ['required','string', 'min:8','max:16'],
         ];
     }
 }

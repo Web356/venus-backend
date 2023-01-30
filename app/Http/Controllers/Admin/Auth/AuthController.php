@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangepasswordRequest;
 use App\Http\Requests\Auth\CheckotpRequest;
+use App\Http\Requests\Auth\CheckpasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Customer\CustomerResource;
@@ -236,7 +238,7 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function check_password(Request $request): JsonResponse
+    public function check_password(CheckpasswordRequest $request): JsonResponse
     {
         $customer = Customer::where('phone_number',$request->phone_number)->first();
 
@@ -386,7 +388,7 @@ class AuthController extends Controller
      * )
      */
 
-    public function new_password(Verify $verify,Request $request): JsonResponse|CustomerResource
+    public function new_password(Verify $verify,ChangepasswordRequest $request): JsonResponse|CustomerResource
     {
         $customer = Customer::where('phone_number',$verify->phone)->first();
         try {
